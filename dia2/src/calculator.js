@@ -1,7 +1,6 @@
-function calculadora (callback) {
-}
+const calculadora = fnOperator => fnOperator
 
-const sum = calculadora((a, b) => a + b)
+const sum = calculadora((a, b) => a + b) // -> closure
 const sub = calculadora((a, b) => a - b)
 const mult = calculadora((a, b) => a * b)
 const div = calculadora((a, b) => a / b)
