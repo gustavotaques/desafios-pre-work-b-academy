@@ -6,3 +6,15 @@ body {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+form {
+  margin-bottom: 70px;
+}
+
+label {
+  display: block;
+}
+
+.form-cars {
+  display: flex;
+}
