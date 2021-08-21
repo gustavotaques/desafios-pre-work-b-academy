@@ -39,7 +39,6 @@ form.addEventListener('submit', (e) => {
         popup.style.display = 'none'
         location.reload()
       })
-      console.log('deu erro na hora de cadastrar', result.message)
       return
     }
   })
@@ -60,14 +59,57 @@ function createRow (data) {
   ]
 
   const tr = document.createElement('tr')
+  tr.dataset.js = data.plate
 
   elements.forEach((element) => {
     const td = document.createElement('td')
     td.textContent = element.value
     tr.appendChild(td)
   })
+
+  const button = document.createElement('button')
+  button.textContent = 'Excluir'
+  button.dataset.js = data.plate
+
+  button.addEventListener('click', (e) => {
+    const plate = e.target.dataset.js
+    const tr = document.querySelector(`[data-js="${plate}"]`)
+    table.removeChild(tr)
+
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({plate})
+    })
+    .then(result => result.json())
+    .catch(err => ({ error: true, message: err.message }))
+    .then(result => {
+      if (result.error){
+        const popup = document.querySelector('[data-js="popup-wrapper"]')
+        const popupContent = document.querySelector('[data-js="popup-content"]')
+        const popupClose = document.querySelector('[data-js="popup-close"]')
+        const h1 = document.createElement('h1')
+        popup.style.display = 'block'
+        h1.textContent = result.message
+        popupContent.appendChild(h1)
+
+        popupClose.addEventListener('click', () => {
+          popup.style.display = 'none'
+          location.reload()
+        })
+        return
+      }
+    })
+  })
+
+  tr.appendChild(button)
   table.appendChild(tr)
+
+
 }
+
 
 function noCar() {
   const tr = document.createElement('tr')
